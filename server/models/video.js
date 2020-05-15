@@ -10,6 +10,8 @@ const videoSchema = new schema(
     }
 );
 
-module.exports = mongoose.model('video',videoSchema,'videoplayer');
+//var myModel = mongoose.model('myModel',videoSchema,'videos');
+
+module.exports = mongoose.model('video',videoSchema,'videos');
 // video is name of model, using videoSchema schema and pointing to the videos collection mLab
 
