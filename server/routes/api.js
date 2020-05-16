@@ -1,28 +1,18 @@
 const express = require('express');
+
 const router = express.Router();
+
 const mongoonse = require("mongoose");
+
 //-- code to first use the model to use the schema --//
 const Videos = require('../models/video');
 
 //--- code to connect to db ---- //
-//const db = "mongodb+srv://sriram:pwsriram@cluster0-ver7x.mongodb.net/test?retryWrites=true&w=majority";
-const db = "mongodb://sriram:pwsriram@cluster0-shard-00-00-ver7x.mongodb.net:27017,cluster0-shard-00-01-ver7x.mongodb.net:27017,cluster0-shard-00-02-ver7x.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority";
+const db = "mongodb+srv://sriram:pwsriram@cluster0-ver7x.mongodb.net/test?retryWrites=true&w=majority";
+
+//const db = "mongodb://sriram:pwsriram@cluster0-shard-00-00-ver7x.mongodb.net:27017,cluster0-shard-00-01-ver7x.mongodb.net:27017,cluster0-shard-00-02-ver7x.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority";
 
 mongoonse.warnings = global.warnings; // to avoid any warnings that mongoose throws during connection
-
-
-// var MongoClient = require('mongodb').MongoClient;
-
-// MongoClient.connect(db, function(err, client) {
-//   const collection = client.db("videoplayer").collection("videos");
-  
-//   // perform actions on the collection object
-  
-//   client.close();
-// });
-
-
-
 
 mongoonse.connect(db,function(err) {
     if(err)
@@ -36,6 +26,17 @@ mongoonse.connect(db,function(err) {
     }
 });
 
+// const connectDB = async() =>
+// {
+//     await mongoose.connect(db,
+//         { 
+//           useUnifiedTopology: true , 
+//           useNewUrlParser   : true 
+//         });
+//     console.log('DB Connection Successful');
+// }
+
+//module.exports = connectDB;
 
 router.get('/',function(req,res) // respond to any request that comes in 
 {

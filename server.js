@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const api = require('./server/routes/api'); // api is the file where all routes are stored
-const port = 3000; // typically you need the cors package to listen to specific port
+const port = process.env.port || 3000; // typically you need the cors package to listen to specific port
 
 const app = express(); // create instance of express server
 
@@ -20,9 +20,7 @@ app.get('*',(req,res) => {
     res.sendFile(path.join(__dirname,'dist/index.html'))
 });
 
-app.listen(port,function()
-{
-    console.log("Server running on localhost :" + port);
-});
+app.listen(port,()=> console.log("Server Started at port:"+ port));
 
+//use npm-i nodemon to run the server without having to start / stop
 
