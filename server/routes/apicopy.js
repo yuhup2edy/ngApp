@@ -25,8 +25,8 @@ try
     //await insertRecords(client);
     //await updateRecord(client);
     //await upsertRecord(client);
-    //await updateMultiple(client);
-    await deleteRecord(client);
+    await updateRecords(client);
+    //await deleteRecord(client);
     await findRecord(client);
  
  //   await findAll(client);
@@ -110,6 +110,25 @@ else
 }
 }
 
+async function updateRecords(client)
+{
+    
+    result = await client.db("videoplayer").collection("videos")
+            .updateMany({ popularity: { $exists: false } },
+                { $set: { popularity: "Unknown" } });    
+ 
+if (result)
+{
+    console.log(`${result.matchedCount} document(s) matched the query criteria.`);
+    console.log(`${result.modifiedCount} document(s) was/were updated.`);        
+}    
+else
+{
+    console.log('Did not find records to updateMany');
+}
+}
+
+
 async function upsertRecord(client)
 {
     
@@ -156,6 +175,7 @@ async function findRecord(client)
       results.forEach((result,i) => {
         console.log(`Title :  + ${result.title}`);
         console.log(`URL : + ${result.url}`);
+        console.log(`Popularity : + ${result.popularity}`);
       });
       //res.send(result);
     }
