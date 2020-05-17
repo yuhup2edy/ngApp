@@ -15,8 +15,7 @@ router.get('/',function(req,res)
     res.send('api routing works !');
 });
 
-
-async function main()
+router.get('/videos',function(req,res)
 {
 
   const uri = "mongodb+srv://sriram:pwsriram@cluster0-ver7x.mongodb.net/test?retryWrites=true&w=majority";
@@ -24,9 +23,9 @@ async function main()
 
 try
 {
-    await client.connect(); // to ensure we wait for connection to be established before further execution
-    await listDatabases(client);
-    await findRecord(client);
+     client.connect(); // to ensure we wait for connection to be established before further execution
+//    await listDatabases(client);
+    //findRecord(client);
  //   await findAll(client);
     
 } catch (e)
@@ -34,11 +33,11 @@ try
     console.log("error received while connecting to DB" + e);
 } finally
 {
-    await client.close();
+    client.close();
 }
 
 }
-main().catch(console.error);
+);
 
 async function listDatabases(client)
 {
@@ -46,22 +45,20 @@ async function listDatabases(client)
  //   console.log(databaseList);    
 }
 
-async function findRecord(client)
+function findRecord(client)
 {
-//    result = await client.db("videoplayer").collection("videos").findOne({title : "Java Brains Tutorial"});
-    result = await client.db("videoplayer").collection("videos").find({});
+    result =  client.db("videoplayer").collection("videos").findOne({title : "Java Brains Tutorial"});
+    //result = await client.db("videoplayer").collection("videos").find({});
    
     if (result)
     {
-        console.log(result);
+      //console.log(result);
+      res.send(result);
     }
     else
     {
         console.log("No such record with title found");
     }
 }
-
-
-
 
 module.exports = router; // export the router usage

@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
-const api = require('./server/routes/api'); // api is the file where all routes are stored
+const api = require('./server/routes/apicopy'); // api is the file where all routes are stored
 
 const port = process.env.port || 3000; // typically you need the cors package to listen to specific port
 
