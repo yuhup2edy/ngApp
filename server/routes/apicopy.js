@@ -189,3 +189,5 @@ module.exports = router; // export the router usage
 
 
 //https://stackoverflow.com/questions/10656574/how-do-i-manage-mongodb-connections-in-a-node-js-web-application
+//https://blog.fullstacktraining.com/sharing-a-mongodb-connection-in-node-js-express/
+
