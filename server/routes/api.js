@@ -11,8 +11,7 @@ router.get('/', function (req, res) {
 router.get('/videos', function (req, res) 
 {
     const collection = req.app.locals.collection;
-    //var cursor = collection.find({views : {$gte:25}});
-    //console.log(req.app.locals.collection);
+    //console.log(collection.length);
 
     const cursor = collection.find({
         
@@ -27,9 +26,9 @@ router.get('/videos', function (req, res)
       console.log("Found results - ");
       results.forEach((result,i) => 
       {
-        console.log(`Title :  + ${result.title}`);
-        console.log(`URL : + ${result.url}`);
-        console.log(`Popularity : + ${result.popularity}`);
+        console.log(`Title :  + ${results.title}`);
+        console.log(`URL : + ${results.url}`);
+        console.log(`Popularity : + ${results.popularity}`);
       
       }
      );

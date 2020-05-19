@@ -25,6 +25,7 @@ app.get('*',(req,res) => {
 });
 
 mongoonse.warnings = global.warnings; // to avoid any warnings that mongoose throws during connection
+var mydb = null;
 
 async function startUp() {
 
@@ -36,6 +37,7 @@ async function startUp() {
         const db = await client.db('videoplayer');
         const collection = await db.collection('videos');
         console.log("Connected");
+        app.locals.database = db;
         app.locals.collection = collection; // this is the critical line to pool the connections
         app.listen(port,()=> console.log("Server Started at port:"+ port));   
         //console.log("Connection Summary :- "+ db.serverStatus.connections());
@@ -56,3 +58,6 @@ startUp().catch(console.error);
 // start server  using nodemon server.js
 
 
+module.exports = app;
+
+//https://www.compose.com/articles/connection-pooling-with-mongodb/
