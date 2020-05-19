@@ -1,64 +1,46 @@
+
 const express = require('express');
 const router = express.Router();
-const mongoonse = require("mongoose");
 
-const {MongoClient} = require('mongodb');
-
-
-//-- code to first use the model to use the schema --//
-//const Videos = require('../models/video');
-
-mongoonse.warnings = global.warnings; // to avoid any warnings that mongoose throws during connection
-
-router.get('/',function(req,res)
-{
+router.get('/', function (req, res) {
     res.send('api routing works !');
 });
 
-router.get('/videos',function(req,res)
-{
 
-  const uri = "mongodb+srv://sriram:pwsriram@cluster0-ver7x.mongodb.net/test?retryWrites=true&w=majority";
-  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-try
+router.get('/videos', function (req, res) 
 {
-     client.connect(); // to ensure we wait for connection to be established before further execution
-//    await listDatabases(client);
-    //findRecord(client);
- //   await findAll(client);
+    const collection = req.app.locals.collection;
+    //var cursor = collection.find({views : {$gte:25}});
+    //console.log(req.app.locals.collection);
+
+    const cursor = collection.find({
+        
+        views : {$gte:25}
+    })
+        .sort({views : -1});
     
-} catch (e)
-{
-    console.log("error received while connecting to DB" + e);
-} finally
-{
-    client.close();
-}
-
-}
-);
-
-async function listDatabases(client)
-{
- //   databaseList = await client.db().admin().listDatabases();
- //   console.log(databaseList);    
-}
-
-function findRecord(client)
-{
-    result =  client.db("videoplayer").collection("videos").findOne({title : "Java Brains Tutorial"});
-    //result = await client.db("videoplayer").collection("videos").find({});
-   
-    if (result)
+    const results = cursor.toArray();
+    
+    if (results.length > 0)
     {
-      //console.log(result);
-      res.send(result);
+      console.log("Found results - ");
+      results.forEach((result,i) => 
+      {
+        console.log(`Title :  + ${result.title}`);
+        console.log(`URL : + ${result.url}`);
+        console.log(`Popularity : + ${result.popularity}`);
+      
+      }
+     );
     }
     else
     {
-        console.log("No such record with title found");
+        res.send("No record found");
     }
-}
+});
+
+
+// no more executable past this line
 
 module.exports = router; // export the router usage
