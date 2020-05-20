@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-//const videoModel = ('../models/video');
-
 const schema = mongoose.Schema;
 
         const videoSchema = new schema(
@@ -16,42 +14,51 @@ const schema = mongoose.Schema;
         }
     );
 
-var videoModel = mongoose.model('video',videoSchema,'videos');
-    
-//const url = "mongodb+srv://sriram:pwsriram@cluster0-ver7x.mongodb.net/test?retryWrites=true&w=majority";
-const url = "mongodb://sriram:pwsriram@cluster0-shard-00-00-ver7x.mongodb.net:27017,cluster0-shard-00-01-ver7x.mongodb.net:27017,cluster0-shard-00-02-ver7x.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority";
+// var SomeModelSchema = new mongoose.Schema({
+//     a_string: String,
+//     a_date: Date
+//     });
+      
+      // Compile model from schema
+//var SomeModel = mongoose.model('SomeModel', SomeModelSchema );
 
-var db = mongoose.connect(url, {useNewUrlParser: true},function(err)
+var videoModel = mongoose.model('video',videoSchema);
+mongoose.Promise = global.Promise;
+
+   
+const url = "mongodb+srv://sriram:pwsriram@cluster0-ver7x.mongodb.net/videoplayer?retryWrites=true&w=majority";
+//                                              
+var db = mongoose.connect(url, {useNewUrlParser: true,useUnifiedTopology: true},function(err)
 {
     if (err)
     {
         console.log("Error Connecting to DB;" + err);
     }
-    else
-    {
-        console.log("Inside api.js, no errors");
-        mongoose.Promise = global.Promise;
-    }
 });
 
 router.get('/', function (req, res) {
     res.send('api routing works !');
-    //console.log(videoModel);
 });
 
 router.get('/videos',function(req,res)
 {
-    console.log("Get Request Placed");
-    
-    //videoModel.find({ url: 'https://www.youtube.com/watch?v=DC5wtYGQ7XE' },function(err,returnedVideos)
-    mongoose.model('video').find(function(err,returnedVideos) 
-              {
-                if(err)
+     //videoModel.findOne({url: 'https://www.youtube.com/watch?v=DC5wtYGQ7XE'})
+     videoModel.find({})
+               .exec(function(error,returnedVideos) {
+                if (error)
                 {
-                    console.log("Error Encountered during fetch "+ err);
+                    console.log("Error while fetching" + error)
                 }
-                res.send(returnedVideos);
-                });
+                else
+                {
+                    res.json(returnedVideos);
+                }
+            });
+        
+        //var awesome_instance = new SomeModel({ name: 'awesome' });
+        // awesome_instance.save(function (err) {
+        // if (err) return handleError(err);
+  
 });
-
+     
 module.exports = router; // export the router usage

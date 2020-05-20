@@ -8,7 +8,12 @@ const port = process.env.port || 3000; // typically you need the cors package to
 
 const app = express(); // create instance of express server
 
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
+var client;
+
 const mongoonse = require("mongoose");
+mongoonse.warnings = global.warnings; // to avoid any warnings that mongoose throws during connection
 
 app.use(express.static(path.join(__dirname,'dist'))); // done in order to map to the dist folder so that express has access to folder
 
@@ -23,15 +28,38 @@ app.get('*',(req,res) => {
     res.sendFile(path.join(__dirname,'dist/index.html'))
 });
 
-mongoonse.warnings = global.warnings; // to avoid any warnings that mongoose throws during connection
+var connection_options = {
+    db:{
+      numberOfRetries : 5
+    },
+    server: {
+      auto_reconnect: true,
+      poolSize : 40,
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      socketOptions: {
+          connectTimeoutMS: 500
+      }
+    },
+    replSet: {},
+    mongos: {}
+  };
 
+var url  = "mongodb+srv://sriram:pwsriram@cluster0-ver7x.mongodb.net/test?retryWrites=true&w=majority";
+var db;
+client = new MongoClient.connect(url, connection_options, function(err, database) {
+
+    if(err) throw err;
+    db = database;
+});
+
+app.listen(port,()=> console.log("Server Started at port:"+ port));
+// });
+
+//app.locals.client = client;
+
+//app.locals.db = db;
 // install nodemon using npm install -g nodemon
 // if you get error use sudo npm install -g --force nodemon 
-// start server  using nodemon server.js
-
-app.listen(port,()=> console.log("Server Started at port:"+ port));   
-//startUp().catch(console.error);
-
-module.exports = app;
-
-//https://www.compose.com/articles/connection-pooling-with-mongodb/
+//module.exports = app;
+//module.exports = client;
