@@ -1,45 +1,57 @@
-
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 
-router.get('/', function (req, res) {
-    res.send('api routing works !');
-});
+//const videoModel = ('../models/video');
 
+const schema = mongoose.Schema;
 
+        const videoSchema = new schema(
+        {
+        title : String,
+        url : String,
+        description : String,
+        views : Number,
+        popularity : String
+        }
+    );
 
-router.get('/videos', function (req, res) 
+var videoModel = mongoose.model('video',videoSchema,'videos');
+    
+//const url = "mongodb+srv://sriram:pwsriram@cluster0-ver7x.mongodb.net/test?retryWrites=true&w=majority";
+const url = "mongodb://sriram:pwsriram@cluster0-shard-00-00-ver7x.mongodb.net:27017,cluster0-shard-00-01-ver7x.mongodb.net:27017,cluster0-shard-00-02-ver7x.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority";
+
+var db = mongoose.connect(url, {useNewUrlParser: true},function(err)
 {
-    const collection = req.app.locals.collection;
-    //console.log(collection.length);
-
-    const cursor = collection.find({
-        
-        views : {$gte:25}
-    })
-        .sort({views : -1});
-    
-    const results = cursor.toArray();
-    
-    if (results.length > 0)
+    if (err)
     {
-      console.log("Found results - ");
-      results.forEach((result,i) => 
-      {
-        console.log(`Title :  + ${results.title}`);
-        console.log(`URL : + ${results.url}`);
-        console.log(`Popularity : + ${results.popularity}`);
-      
-      }
-     );
+        console.log("Error Connecting to DB;" + err);
     }
     else
     {
-        res.send("No record found");
+        console.log("Inside api.js, no errors");
+        mongoose.Promise = global.Promise;
     }
 });
 
+router.get('/', function (req, res) {
+    res.send('api routing works !');
+    //console.log(videoModel);
+});
 
-// no more executable past this line
+router.get('/videos',function(req,res)
+{
+    console.log("Get Request Placed");
+    
+    //videoModel.find({ url: 'https://www.youtube.com/watch?v=DC5wtYGQ7XE' },function(err,returnedVideos)
+    mongoose.model('video').find(function(err,returnedVideos) 
+              {
+                if(err)
+                {
+                    console.log("Error Encountered during fetch "+ err);
+                }
+                res.send(returnedVideos);
+                });
+});
 
 module.exports = router; // export the router usage
