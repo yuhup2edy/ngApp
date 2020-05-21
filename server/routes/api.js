@@ -22,10 +22,10 @@ const schema = mongoose.Schema;
       // Compile model from schema
 //var SomeModel = mongoose.model('SomeModel', SomeModelSchema );
 
-var videoModel = mongoose.model('video',videoSchema);
+var videoModel = mongoose.model('video',videoSchema,'videos');
+
 mongoose.Promise = global.Promise;
 
-   
 const url = "mongodb+srv://sriram:pwsriram@cluster0-ver7x.mongodb.net/videoplayer?retryWrites=true&w=majority";
 //                                              
 var db = mongoose.connect(url, {useNewUrlParser: true,useUnifiedTopology: true},function(err)
@@ -60,5 +60,37 @@ router.get('/videos',function(req,res)
         // if (err) return handleError(err);
   
 });
-     
+
+router.get('/videos/:id',function(req,res)
+{
+     //videoModel.findOne({url: 'https://www.youtube.com/watch?v=DC5wtYGQ7XE'})
+     videoModel.findById(req.params.id)
+               .exec(function(error,returnedVideo) {
+                if (error)
+                {
+                    console.log("Error while fetching video by ID" + error)
+                }
+                else
+                {
+                    res.json(returnedVideo);
+                }
+            });
+  
+});
+
+
+router.post('/video',function(req,res)
+{
+     //videoModel.findOne({url: 'https://www.youtube.com/watch?v=DC5wtYGQ7XE'})
+    // remember to use the video model to create new instance of the video object to insert / save
+    var newVideo = new videoModel;
+    newVideo.title       = req.body.title;
+    newVideo.url         = req.body.url;
+    newVideo.description = req.body.description;
+    newVideo.views       = req.body.views;
+    newVideo.popularity  = req.body.popularity;
+});
+
+
+
 module.exports = router; // export the router usage
