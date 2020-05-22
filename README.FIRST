@@ -1,0 +1,8 @@
+
+npm install --save bootstrap@3 in order to get the latest bootstrap functions
+
+change outputpath inside package.json to point to /dist so that it gets rendered by the nodemon service
+
+after creating the video list and video detail components, remember to remove the app- keyword from the selector statements 
+from within both the components.ts files
+
