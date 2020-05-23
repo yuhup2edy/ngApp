@@ -10,7 +10,7 @@ export class VideoCenterComponent implements OnInit {
 
   constructor() { }
 
-  listofvideos : Video[] = [
+  videos : Video[] = [
   {"_id":"1","title":"First   Video","url":"www.ndtv.com","description":"Indian News1","views":98,"popularity":"normal"},
   {"_id":"2","title":"Second  Video","url":"www.cnn.com","description":"Indian News2","views":10,"popularity":"sub-normal"},
   {"_id":"3","title":"Third   Video","url":"www.abcnews.com","description":"Indian News3","views":100551,"popularity":"high"},
@@ -19,7 +19,15 @@ export class VideoCenterComponent implements OnInit {
 
 ];
 
+  selectedVideo : Video;
+
   ngOnInit(): void {
+  }
+
+  onSelectedVideo(video : any)
+  {
+    this.selectedVideo = video;
+    console.log(this.selectedVideo);
   }
 
 }

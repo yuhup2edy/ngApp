@@ -1,9 +1,12 @@
 <div class="row">
     <div class="col-sm-9">
-        <video-detail></video-detail>
+        <video-detail *ngIf="selectedVideo" [video]="selectedVideo"></video-detail>
+        <!-- we now receive the selected video as input on the video detaul and display only if user has selected a video-->
     </div>
     <div class="col-sm-3">
-        <video-list [videos]="videos"></video-list> 
+        <video-list (SelectVideo)="onSelectedVideo($event)"
+        [videos]="videos"></video-list> 
+        <!-- the selectvideo is an emitter receiver from video list component -->
         <!-- property binding to the videos array to be used in component input under video list component.ts-->
     </div>
 </div>
