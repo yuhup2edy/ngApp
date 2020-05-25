@@ -6,3 +6,4 @@ change outputpath inside package.json to point to /dist so that it gets rendered
 after creating the video list and video detail components, remember to remove the app- keyword from the selector statements 
 from within both the components.ts files
 
+create a safe pipe to oversome the unsafe URL exception coming out of the iFrame 

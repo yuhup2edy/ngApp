@@ -1,9 +1,38 @@
 <div class="row">
     <div class="col-sm-9">
-        <video-detail *ngIf="selectedVideo" [video]="selectedVideo"></video-detail>
+        <div *ngIf="!hidenewvideo">
+            <h2> New Video</h2>
+            <form #form="ngForm" (ngSubmit)="onSubmitAddVideo(form.value)" class="well">
+                <div class="form-group">
+                    <label> Title </label>
+                    <input type="text" class="form-control" required name="title" ngModel>
+                </div>
+                <div class="form-group">
+                    <label> URL </label>
+                    <input type="text" class="form-control" required name="url" ngModel>
+                </div>
+                <div class="form-group">
+                    <label> Description </label>
+                    <input type="text" class="form-control" required name="description" ngModel>
+                </div>
+                <div class="form-group">
+                    <label> Views </label>
+                    <input type="text" class="form-control"  name="views" ngModel>
+                </div>
+                <div class="form-group">
+                    <label> Popularity </label>
+                    <input type="text" class="form-control"  name="popularity" ngModel>
+                </div>
+                <button type="submit" class="btn btn-success"> Save </button>
+            </form>
+        </div>
+        <video-detail *ngIf="selectedVideo && hidenewvideo" [video]="selectedVideo"></video-detail>
         <!-- we now receive the selected video as input on the video detaul and display only if user has selected a video-->
     </div>
     <div class="col-sm-3">
+
+        <button (click)="newVideo()" style="margin-bottom:2px;" type=button class="btn btn-success btn-block">  + New Video </button> 
+
         <video-list (SelectVideo)="onSelectedVideo($event)"
         [videos]="videos"></video-list> 
         <!-- the selectvideo is an emitter receiver from video list component -->

@@ -19,6 +19,7 @@ export class VideoCenterComponent implements OnInit {
 
   selectedVideo : Video;
 
+  public hidenewvideo : boolean = true;
   errorMsg : String;
 
   constructor(private _videoService : VideoService) { }
@@ -46,7 +47,21 @@ export class VideoCenterComponent implements OnInit {
   onSelectedVideo(video : any)
   {
     this.selectedVideo = video;
+    this.hidenewvideo = true;  // this property is to show / hide the new video addition form in the html
     console.log(this.selectedVideo);
+  }
+
+  onSubmitAddVideo(video : Video) {
+    this._videoService.addVideo(video)
+        .subscribe(data => {
+          this.videos.push(data); // this statement will push the new video into the UI (array) after inserting into Db
+          this.hidenewvideo = true;
+          this.selectedVideo = data; // this statement will make the newly inserted video as the selected video
+        });
+  }
+
+  newVideo(){
+    this.hidenewvideo = false;
   }
 
 }

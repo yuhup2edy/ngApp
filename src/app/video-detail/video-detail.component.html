@@ -1,5 +1,9 @@
 
 <div>
+    <div>
+        <iframe width="100%" height="300" [src]="video.url | safe"></iframe>
+    </div>
+    <!-- use the safe pipe here to transform the unsafe URL to a safe URL-->
     <form> 
         
         <div *ngIf="editTitle" class="form-group">
