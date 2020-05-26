@@ -7,3 +7,15 @@ after creating the video list and video detail components, remember to remove th
 from within both the components.ts files
 
 create a safe pipe to oversome the unsafe URL exception coming out of the iFrame 
+also fix the watch Vs embed issue within pipe 
+
+remember the workflow for this app is as below :-
+
+Video Center is the main app and has both video detail and video list components
+    Video list component contains array of videos from the database 
+    Video Detail will contain the iFrame to play the video and the option to add new videos
+
+All logic rests in the Video Center component. Input selector used to pass info to the video list.Emitter function used to send info
+from list back to center.
+Center to detail is via binding
+

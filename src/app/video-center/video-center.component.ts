@@ -60,6 +60,28 @@ export class VideoCenterComponent implements OnInit {
         });
   }
 
+  onUpdateVideoEvent(video : any){
+    this._videoService.updateVideo(video)
+    .subscribe((data : any) => video = data); // subtle diff between get and update. see the : any attribute in function vs Video 
+  
+    this.selectedVideo = null; // do this so that the detail view is cleared in the UI
+  }
+  onDeleteVideoEvent(video : any){
+    let videoArray = this.videos;
+
+    this._videoService.deleteVideo(video)
+    .subscribe((data : any) => {
+      for (let i = 0; i < videoArray.length; i++){
+        if (videoArray[i]._id === video._id)
+        {
+          videoArray.splice(i,1); // compare the deleted video with the array of all videos in the UI and splice 1 video
+        }                         // remember the db is already deleted when you get here
+      }
+    }); 
+  
+    this.selectedVideo = null; // do this so that the detail view is cleared in the UI
+  }
+
   newVideo(){
     this.hidenewvideo = false;
   }
